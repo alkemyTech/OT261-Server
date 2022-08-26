@@ -3,7 +3,7 @@ var router = express.Router();
 const { check } = require('express-validator');
 const { userRegister } = require('../controllers/auth');
 
-router.post('/',[
+router.post('/register',[
     check('firstName','Name is required').not().isEmpty(),
     check('lastName','LastName is required').not().isEmpty(),
     check('password','Password min 6 characters').isLength({min:6,
