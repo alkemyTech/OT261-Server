@@ -10,9 +10,6 @@ const bcrypt = require('bcryptjs');
 const login = async (req = request, res = response, next) => {
   const { email, password } = req.body;
 
-  /* ======================
-     temp user const (seria ideal que el usuario venga en la req)
-     ====================== */
   const user = await User.findOne({
     where: { email },
   });
