@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const db = require('./models');
 const sequelize = db.sequelize;
 
@@ -22,12 +24,14 @@ sequelize
     /* ======================
        Crea un usuario ↓↓
        ====================== */
+    const salt = bcrypt.genSaltSync();
+    const hash = bcrypt.hashSync('123456', salt);
     const user = await User.create({
       firstName: 'test',
       lastName: 'test',
       email: 'test@test.com',
       image: 'test',
-      password: '123456',
+      password: hash,
     });
     console.log(`\nemail: ${user.email}\npassword: ${user.password}\n`);
     /* ======================

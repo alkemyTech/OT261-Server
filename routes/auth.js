@@ -3,7 +3,7 @@ var router = express.Router();
 const { validateFields } = require('../middlewares');
 const { login } = require('../controllers/auth');
 const { body, check } = require('express-validator');
-const { existsEmail } = require('../helpers/auth-validations');
+const { existsUserWithThisEmail } = require('../helpers/auth-validations');
 
 /* ======================
    Endpoint: /auth/login
@@ -16,7 +16,7 @@ router.post(
     body('password')
       .isLength({ min: 5 })
       .withMessage('La contraseña debe tener al menos 5 caracteres'),
-    check('email').custom(existsEmail),
+    check('email').custom(existsUserWithThisEmail),
     validateFields,
   ],
   login
