@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const jwtTest = () => {
+exports.generateJWT = () => {
   const exampleObject = {
     name: 'Example Object',
     email: 'example@example.com',
@@ -12,6 +12,3 @@ const jwtTest = () => {
 
   return {user: exampleObject, token};
 };
-
-
-module.exports = jwtTest;

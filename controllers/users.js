@@ -1,8 +1,6 @@
-const serviceJWT = require('../services/users');
+const {userService} = require('../services');
 
-const generateJWT = (_req, res) => {
-  const token = serviceJWT();
+exports.generateJWT = (_req, res) => {
+  const token = userService.generateJWT();
   return res.status(200).json(token);
-}
-
-module.exports = generateJWT;
+};
