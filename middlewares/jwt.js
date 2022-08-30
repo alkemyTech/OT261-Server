@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const jwtConfig = require('../config/jwtConfig');
 
 const jwt = (req, _res, next) => {
   const authHeader = req.headers['authorization'];
@@ -7,7 +8,7 @@ const jwt = (req, _res, next) => {
 
   if (token == null) return next(new Error('Invalid token'));
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, jwtConfig.secret, (err, user) => {
     if (err) return next(new Error('Invalid token'));
     req.user = user;
     next();

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const jwtConfig = require('../config/jwtConfig');
 
 exports.generateJWT = () => {
   const exampleObject = {
@@ -6,8 +7,8 @@ exports.generateJWT = () => {
     email: 'example@example.com',
   };
 
-  const token = jwt.sign(exampleObject, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRATION_TIME,
+  const token = jwt.sign(exampleObject, jwtConfig.secret, {
+    expiresIn: jwtConfig.expiration_time,
   });
 
   return {user: exampleObject, token};
