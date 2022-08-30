@@ -1,4 +1,4 @@
-const e = require("express")
+const express = require("express")
 const Sequelize = require('sequelize');
 const sequelize = require('../models').sequelize;
 const User = require('../models/user')(sequelize, Sequelize.DataTypes,Sequelize.Model)
