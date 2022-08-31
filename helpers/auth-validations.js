@@ -1,4 +1,4 @@
-const db = require('../models');
+const db = require('../schemas');
 const { User } = db.sequelize.models;
 
 const existsUserWithThisEmail = async (email) => {

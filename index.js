@@ -6,7 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
-const {userRouter} = require('./routes');
+const {userRouter, authRouter} = require('./routes');
 
 const app = express();
 app.use(cors());

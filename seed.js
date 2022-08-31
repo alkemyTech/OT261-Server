@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 
-const db = require('./models');
+const db = require('./schemas');
 const sequelize = db.sequelize;
 
 const { User, Role } = db.sequelize.models;

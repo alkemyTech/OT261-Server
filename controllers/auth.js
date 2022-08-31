@@ -1,5 +1,5 @@
 const { request, response } = require('express');
-const db = require('../models');
+const db = require('../schemas');
 const { User } = db.sequelize.models;
 const bcrypt = require('bcryptjs');
 
