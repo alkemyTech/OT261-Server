@@ -1,1 +1,0 @@
-exports.userService = require('./users');
