@@ -3,7 +3,7 @@ const router = Router()
 const { body, check } = require('express-validator')
 const activitiesController = require('../controllers/activities')
 const { validateFields } = require('../middlewares/validateFields')
-
+// commit test
 router.put(
   '/:id',
   [
