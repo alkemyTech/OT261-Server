@@ -1,44 +1,27 @@
-const e = require("express")
-const Sequelize = require('sequelize');
-const sequelize = require('../models').sequelize;
-const User = require('../models/user')(sequelize, Sequelize.DataTypes,Sequelize.Model)
-var bcrypt = require('bcryptjs')
-const { validationResult } = require("express-validator")
-
-const userRegister = async (req, res) => {
-  let { firstName, password, email,lastName,image } = req.body;
-
-  image = image? image: 'https://images.pexels.com/photos/1181325/pexels-photo-1181325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-
-  const errors = validationResult(req);
-  if (!errors.isEmpty())  return res.status(400).json(errors);
 
 
+const {userRegister} = require('../services/auth')
+let dto = {
+  message: 'Is ok',
+  status: 200,
+  data: [],
+  error: []
+}
 
+async function userRegistro(firstName, password, email, lastName, image,req) {
+  
   try {
-    const user = new User({ firstName, password, email,lastName,image });
-
-    const existsUser = await User.findOne({ where: { email: email } });
     
-
-    if (existsUser) {
-      return res.status(400).json({ msg: "This email is already associated with an account" });
-    }
-
-    const salt = bcrypt.genSaltSync();
-    user.password = bcrypt.hashSync(password, salt);
-
-    await user.save();
+    const responseService = await userRegister(firstName, password, email, lastName, image,req)
    
-
-    res.json({
-      user,
-      
-    });
+    dto.data = responseService
+    return dto
   } catch (error) {
-    console.log(error);
-    res.json({ msg: error });
+    dto.error = error
+    return dto
   }
-};
+  
+}
 
-module.exports = { userRegister };
+
+module.exports = {userRegistro}

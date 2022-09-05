@@ -1,7 +1,25 @@
 
+const service = require('../services/user')
+let dto = {
+  message: 'Is ok',
+  status: 200,
+  data: [],
+  error: []
+}
 
-function get (req, res, next) {
-    res.send('respond with a resource');
-  };
+async function controllerGetUser(name) {
+  try {
 
-module.exports = get
+    const responseService = await service.serviceGetUser(name)
+    dto.data = responseService
+    return dto
+  } catch (error) {
+    dto.error = error
+    return dto
+  }
+}
+
+
+module.exports = {
+  controllerGetUser
+}
