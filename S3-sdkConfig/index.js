@@ -14,7 +14,7 @@ const bucketSecret = process.env.BUCKET_SECRET_KEY;
 // memoryStorage Object
 const storage = multer.memoryStorage();
 // function to storage images in memory
-const upload = multer({ storage: storage });
+exports.upload = multer({ storage: storage });
 
 //config to upload a single image --input name image name-- middleware to use in post routes
 // upload.single("image"); middleware for uploading files
@@ -25,6 +25,7 @@ exports.s3Upload = async (file) => {
       accessKeyId: bucketPublic,
       secretAccessKey: bucketSecret,
     },
+    region: 'us-east-1',
   });
 
   const params = {
