@@ -1,4 +1,6 @@
+
 const service = require('../services/user');
+
 
 let dto = {
   message: 'Is ok',
@@ -30,6 +32,7 @@ async function controllerGenerateJWT() {
 }
 
 module.exports = {
+
   controllerGetUser,
   controllerGenerateJWT,
 };
