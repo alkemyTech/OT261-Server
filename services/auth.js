@@ -9,7 +9,7 @@ var bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 
 async function userRegister(firstName, password, email, lastName, image,req ) {
-  console.log('llegue acaa')
+  
 
   image = image? image : "https://images.pexels.com/photos/1181325/pexels-photo-1181325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
