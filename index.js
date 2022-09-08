@@ -22,7 +22,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/users', userRouter)
-app.use('/users', userRouter)
 app.use('/activities', activityRouter)
 
 // catch 404 and forward to error handler
