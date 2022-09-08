@@ -3,6 +3,8 @@ const router = Router()
 const { body, check } = require('express-validator')
 const activitiesController = require('../controllers/activities')
 const { validateFields } = require('../middlewares/validateFields')
+const { upload } = require('../S3-sdkConfig')
+const controller = require('../controllers/activities')
 
 const isRequired = prop => {
   return `${prop} is required`
@@ -21,5 +23,21 @@ router.put(
   ],
   activitiesController.updateActivity
 )
+
+router.post('/', upload.single('image'), async (req, res, next) => {
+  try {
+    const { name, content } = req.body
+    const image = req.file
+    const response = await controller.controllerCreateActivity(
+      name,
+      content,
+      image
+    )
+
+    res.status(201).send(response)
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router

@@ -1,2 +1,2 @@
 exports.userRouter = require('./users')
-exports.activitiesRouter = require('./activities')
+exports.activityRouter = require('./activities')
