@@ -3,17 +3,21 @@ const router = Router()
 const { body, check } = require('express-validator')
 const activitiesController = require('../controllers/activities')
 const { validateFields } = require('../middlewares/validateFields')
-// commit test
+
+const isRequired = prop => {
+  return `${prop} is required`
+}
+
+/* ======================
+   Update activity ↓↓
+   ====================== */
 router.put(
   '/:id',
   [
-    check('id').not().isEmpty().withMessage('El id es requerido'),
-    body('title').not().isEmpty().withMessage('El titulo es requerido'),
-    body('description')
-      .not()
-      .isEmpty()
-      .withMessage('La description es requerida'),
-    validateFields
+    check('id').not().isEmpty().withMessage(isRequired('id')),
+    body('name').not().isEmpty().withMessage(isRequired('name')),
+    body('content').not().isEmpty().withMessage(isRequired('content')),
+    validateFields,
   ],
   activitiesController.updateActivity
 )
