@@ -1,4 +1,4 @@
-const { Router } = require('express')
+const { Router, request, response } = require('express')
 const router = Router()
 const { body, check } = require('express-validator')
 const activitiesController = require('../controllers/activities')
@@ -21,7 +21,17 @@ router.put(
     body('content').not().isEmpty().withMessage(isRequired('content')),
     validateFields,
   ],
-  activitiesController.updateActivity
+  async (req = request, res = response, next) => {
+    try {
+      const { name, content } = req.body
+      const { id } = req.params
+      const newValues = { name, content }
+      const response = await controller.controllerUpdateActivity(id, newValues)
+      res.status(200).json(response)
+    } catch (error) {
+      next(error)
+    }
+  }
 )
 
 router.post('/', upload.single('image'), async (req, res, next) => {

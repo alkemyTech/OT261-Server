@@ -1,22 +1,13 @@
-const { request, response } = require('express')
-const ActivitiesService = require('../services/activities.service')
 const service = require('../services/activity')
 
-const updateActivity = async (req = request, res = response, next) => {
-  const { name, content } = req.body
-  const { id } = req.params
-  const existsActivity = await ActivitiesService.findActivityById(id)
-  if (!existsActivity) {
-    return res
-      .status(400)
-      .json({ ok: false, msg: `No existe una actividad con el id ${id}` })
+const controllerUpdateActivity = async (id, newValues) => {
+  try {
+    const activityUpdated = await service.serviceUpdateActivity(id, newValues)
+    console.log(activityUpdated)
+    return res.json(activityUpdated)
+  } catch (error) {
+    return error
   }
-  const activityUpdated = await ActivitiesService.updateActivity(id, {
-    name,
-    content,
-  })
-
-  return res.json(activityUpdated)
 }
 
 async function controllerCreateActivity(name, content, image) {
@@ -46,6 +37,7 @@ async function controllerCreateActivity(name, content, image) {
 
     return dto
   } catch (error) {
+    console.log(error.message)
     dto.error = error
     dto.status = 400
     dto.message = error.message
@@ -56,5 +48,5 @@ async function controllerCreateActivity(name, content, image) {
 
 module.exports = {
   controllerCreateActivity,
-  updateActivity,
+  controllerUpdateActivity,
 }
