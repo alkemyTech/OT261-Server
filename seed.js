@@ -37,6 +37,6 @@ sequelize
     /* ======================
        Vincula el rol creado al usuario ↓↓
        ====================== */
-    user.setRole(rol)
+    await user.setRole(rol)
     process.exit()
   })
