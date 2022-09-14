@@ -50,9 +50,9 @@ const login = async (email, password) => {
     const user = await User.findOne({ where: { email } })
     const validPassword = bcrypt.compareSync(password, user.password)
     if (!validPassword) {
-      return res
-        .status(400)
-        .json({ ok: false, msg: `El correo o la contraseña no son válidos` })
+      dto.message = `El correo o la contraseña no son válidos`
+      dto.status = 400
+      return dto
     }
 
     const { password: pass, ...userWithoutPassword } = user.toJSON()

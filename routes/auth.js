@@ -76,7 +76,7 @@ router.post(
   ],
   async (req = request, res = response, next) => {
     try {
-      console.log(req.body)
+      console.log('body', req.body)
       const { email, password } = req.body
       const response = await controller.login(email, password)
       console.log(response)
