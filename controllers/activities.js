@@ -4,7 +4,7 @@ const controllerUpdateActivity = async (id, newValues) => {
   try {
     const dto = await service.serviceUpdateActivity(id, newValues)
     console.log(dto)
-    return res.json(dto)
+    return dto
   } catch (error) {
     return error
   }
