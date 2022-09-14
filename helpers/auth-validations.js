@@ -7,7 +7,6 @@ const existsUserWithThisEmail = async email => {
   if (!existsUser) {
     throw new Error(`El correo o la contraseña no son válidos`)
   }
-  // return true
+  return true
 }
-
 module.exports = { existsUserWithThisEmail }
