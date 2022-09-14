@@ -1,26 +1,5 @@
-const { request, response } = require('express')
-const { AuthService } = require('../services/auth')
-
-/* ======================
-   Endpoint: /auth/login
-   ====================== */
-
-const login = async (req = request, res = response, next) => {
-  const { email, password } = req.body
-
-  const user = await AuthService.findUserByEmail(email)
-  const validPassword = AuthService.comparePasswords(password, user.password)
-  if (!validPassword) {
-    return res
-      .status(400)
-      .json({ ok: false, msg: `El correo o la contraseña no son válidos` })
-  }
-
-  const userWithoutPassword = AuthService.getUserWithoutPassword(user)
-  return res.json(userWithoutPassword)
-}
-
 const { userRegister } = require('../services/auth')
+const service = require('../services/auth')
 let dto = {
   message: 'Is ok',
   status: 200,
@@ -44,6 +23,19 @@ async function userRegistro(firstName, password, email, lastName, image, req) {
   } catch (error) {
     dto.error = error
     return dto
+  }
+}
+
+/* ======================
+   Endpoint: /auth/login
+   ====================== */
+
+const login = async (email, password) => {
+  try {
+    const dto = await service.login(email, password)
+    return dto
+  } catch (error) {
+    return error
   }
 }
 

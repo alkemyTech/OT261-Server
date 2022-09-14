@@ -1,22 +1,6 @@
 const db = require('../schemas')
 const { User } = db.sequelize.models
 const bcrypt = require('bcryptjs')
-
-class AuthService {
-  static async findUserByEmail(email) {
-    const user = await User.findOne({ where: { email } })
-    return user
-  }
-  static comparePasswords(password, passwordDB) {
-    const validPassword = bcrypt.compareSync(password, passwordDB)
-    return validPassword
-  }
-  static getUserWithoutPassword(user) {
-    const { password, ...userWithoutPassword } = user.toJSON()
-    return userWithoutPassword
-  }
-}
-
 const Sequelize = require('sequelize')
 const sequelize = require('../schemas').sequelize
 // const User = require('../schemas/user')(
@@ -55,4 +39,35 @@ async function userRegister(firstName, password, email, lastName, image, req) {
   }
 }
 
-module.exports = { userRegister, AuthService }
+const login = async (email, password) => {
+  const dto = {
+    message: '',
+    status: 200,
+    data: [],
+    error: []
+  }
+  try {
+    const user = await User.findOne({ where: { email } })
+    const validPassword = bcrypt.compareSync(password, user.password)
+    if (!validPassword) {
+      return res
+        .status(400)
+        .json({ ok: false, msg: `El correo o la contraseña no son válidos` })
+    }
+
+    const { password: pass, ...userWithoutPassword } = user.toJSON()
+
+    dto.data = userWithoutPassword
+    return dto
+  } catch (error) {
+    const dto = {
+      error,
+      status: 400,
+      message: error.message,
+      data: []
+    }
+    return dto
+  }
+}
+
+module.exports = { userRegister, login }
