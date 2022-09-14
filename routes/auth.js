@@ -4,6 +4,7 @@ const { validateFields } = require('../middlewares')
 const { login } = require('../controllers/auth')
 const { body, check } = require('express-validator')
 const { existsUserWithThisEmail } = require('../helpers/auth-validations')
+const controller = require('../controllers/auth')
 
 /* ======================
    Endpoint: /auth/login
@@ -14,6 +15,8 @@ router.post(
   [
     body('email').isEmail().withMessage('El email no es válido'),
     body('password')
+      .isString()
+      .withMessage('La contraseña debe ser un string')
       .isLength({ min: 5 })
       .withMessage('La contraseña debe tener al menos 5 caracteres'),
     check('email').custom(existsUserWithThisEmail),
@@ -21,8 +24,6 @@ router.post(
   ],
   login
 )
-
-const controller = require('../controllers/auth')
 
 router.post(
   '/register',

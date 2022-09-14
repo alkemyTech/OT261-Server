@@ -1,5 +1,5 @@
 const { request, response } = require('express')
-const AuthService = require('../services/auth')
+const { AuthService } = require('../services/auth')
 
 /* ======================
    Endpoint: /auth/login
