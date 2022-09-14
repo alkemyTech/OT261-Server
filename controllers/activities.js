@@ -2,9 +2,9 @@ const service = require('../services/activity')
 
 const controllerUpdateActivity = async (id, newValues) => {
   try {
-    const activityUpdated = await service.serviceUpdateActivity(id, newValues)
-    console.log(activityUpdated)
-    return res.json(activityUpdated)
+    const dto = await service.serviceUpdateActivity(id, newValues)
+    console.log(dto)
+    return res.json(dto)
   } catch (error) {
     return error
   }
@@ -15,7 +15,7 @@ async function controllerCreateActivity(name, content, image) {
     message: '',
     status: 200,
     data: [],
-    error: [],
+    error: []
   }
 
   const allowedExtensions = ['jpeg', 'png', 'webp']
@@ -48,5 +48,5 @@ async function controllerCreateActivity(name, content, image) {
 
 module.exports = {
   controllerCreateActivity,
-  controllerUpdateActivity,
+  controllerUpdateActivity
 }
