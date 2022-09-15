@@ -18,11 +18,18 @@ sequelize
       name: 'Standard',
       description: 'Rol para los usuarios logeados'
     })
-    return standardRole
-  })
-  .then(async rol => {
     /* ======================
-       Crea un usuario ↓↓
+       Crea el rol admin ↓↓
+       ====================== */
+    const adminRole = await Role.create({
+      name: 'Admin',
+      description: 'Rol para los administradores'
+    })
+    return { standardRole, adminRole }
+  })
+  .then(async ({ standardRole, adminRole }) => {
+    /* ======================
+       Crea un usuario standard ↓↓
        ====================== */
     const salt = bcrypt.genSaltSync()
     const hash = bcrypt.hashSync('123456', salt)
@@ -35,8 +42,23 @@ sequelize
     })
     console.log(`\nemail: ${user.email}\npassword: ${user.password}\n`)
     /* ======================
-       Vincula el rol creado al usuario ↓↓
+       Vincula el rol standard al usuario ↓↓
        ====================== */
-    await user.setRole(rol)
+    await user.setRole(standardRole)
+    /* ======================
+       Crea un usuario admin ↓↓
+       ====================== */
+    const admin = await User.create({
+      firstName: 'admin',
+      lastName: 'admin',
+      email: 'admin@admin.com',
+      image: 'image',
+      password: hash
+    })
+    console.log(`\nemail: ${admin.email}\npassword: ${admin.password}\n`)
+    /* ======================
+      Vincula el rol admin al usuario ↓↓
+      ====================== */
+    await admin.setRole(adminRole)
     process.exit()
   })
