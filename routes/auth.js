@@ -79,7 +79,8 @@ router.post(
       const { email, password } = req.body
       const response = await controller.login(email, password)
       console.log(response)
-      res.status(200).json(response)
+      if (response.status === 400) return res.status(400).json(response)
+      return res.status(200).json(response)
     } catch (error) {
       next(error)
     }

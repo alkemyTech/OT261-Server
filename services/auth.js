@@ -44,7 +44,7 @@ const login = async (email, password) => {
     message: '',
     status: 200,
     data: [],
-    error: []
+    errors: []
   }
   try {
     const user = await User.findOne({ where: { email } })
@@ -52,6 +52,7 @@ const login = async (email, password) => {
     if (!validPassword) {
       dto.message = `El correo o la contraseña no son válidos`
       dto.status = 400
+      dto.errors = [...dto.errors, { msg: dto.message }]
       return dto
     }
 
