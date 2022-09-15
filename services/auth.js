@@ -59,7 +59,6 @@ const login = async (email, password) => {
 
     const { password: pass, ...userWithoutPassword } = user.toJSON()
     const data = await serviceGenerateJWT(userWithoutPassword)
-    console.log(data)
     dto.data = data
     return dto
   } catch (error) {
