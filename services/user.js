@@ -40,13 +40,16 @@ const deleteUserById = async id => {
     errors: []
   }
   try {
-    const usersDeleted = await User.destroy({
-      where: {
-        id
+    const userDeleted = await User.update(
+      { status: false },
+      {
+        where: {
+          id
+        }
       }
-    })
-    if (usersDeleted > 0) {
-      dto.message = `Se ha eliminado ${usersDeleted} usuario`
+    )
+    if (userDeleted > 0) {
+      dto.message = `Se ha eliminado ${userDeleted} usuario`
       return dto
     }
     throw new Error(`No se encontro un usuario con el id ${id}`)

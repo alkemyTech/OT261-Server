@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       roleId: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
-      status: DataTypes.BOOLEAN
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      }
     },
     {
       sequelize,
