@@ -91,7 +91,7 @@ router.post(
 /* ======================
    Endpoint: /auth
    ====================== */
-router.get('/auth', verifyJWT, async (req = request, res = response) => {
+router.get('/', verifyJWT, async (req = request, res = response) => {
   res.status(200).json(req.user)
 })
 
