@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 const jwtConfig = require('../config/jwtConfig')
+const db = require('../schemas')
+const { User } = db.sequelize.models
 
 async function serviceGetUser(name) {
   try {
@@ -30,7 +32,37 @@ async function serviceGenerateJWT(userWithoutPassword) {
   }
 }
 
+const deleteUserById = async id => {
+  const dto = {
+    message: '',
+    status: 200,
+    data: [],
+    errors: []
+  }
+  try {
+    const usersDeleted = await User.destroy({
+      where: {
+        id
+      }
+    })
+    if (usersDeleted > 0) {
+      dto.message = `Se ha eliminado ${usersDeleted} usuario`
+      return dto
+    }
+    throw new Error(`No se encontro un usuario con el id ${id}`)
+  } catch (error) {
+    const dto = {
+      error,
+      status: 400,
+      message: error.message,
+      data: []
+    }
+    return dto
+  }
+}
+
 module.exports = {
   serviceGetUser,
-  serviceGenerateJWT
+  serviceGenerateJWT,
+  deleteUserById
 }
