@@ -15,7 +15,8 @@ router.post(
       min: 6,
       max: 20
     }),
-    check('email', 'Invalid email, please enter again').isEmail()
+    check('email', 'Invalid email, please enter again').isEmail(),
+    validateFields
   ],
   async (req, res, next) => {
     try {

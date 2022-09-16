@@ -18,7 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       image: DataTypes.STRING,
       password: DataTypes.STRING,
-      roleId: DataTypes.INTEGER,
+      roleId: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1
+      },
       deletedAt: DataTypes.DATE,
       status: {
         type: DataTypes.BOOLEAN,

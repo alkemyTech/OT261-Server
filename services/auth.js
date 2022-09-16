@@ -16,10 +16,6 @@ async function userRegister(firstName, password, email, lastName, image, req) {
     ? image
     : 'https://images.pexels.com/photos/1181325/pexels-photo-1181325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
 
-  const errors = validationResult(req)
-
-  if (!errors.isEmpty()) return errors
-
   try {
     const user = new User({ firstName, password, email, lastName, image })
 
@@ -33,8 +29,9 @@ async function userRegister(firstName, password, email, lastName, image, req) {
     user.password = bcrypt.hashSync(password, salt)
 
     await user.save()
+    const { password: pass, ...userWithoutPassword } = user.toJSON()
 
-    return user
+    return userWithoutPassword
   } catch (error) {
     return { msg: error }
   }
