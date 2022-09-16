@@ -1,30 +1,10 @@
 var express = require('express')
 var router = express.Router()
 const { validateFields } = require('../middlewares')
-const { login } = require('../controllers/auth')
 const { body, check } = require('express-validator')
 const { existsUserWithThisEmail } = require('../helpers/auth-validations')
 const controller = require('../controllers/auth')
 const verifyJWT = require('../middlewares/jwt')
-
-/* ======================
-   Endpoint: /auth/login
-   ====================== */
-/*
-router.post(
-  '/login',
-  [
-    body('email').isEmail().withMessage('El email no es válido'),
-    body('password')
-      .isString()
-      .withMessage('La contraseña debe ser un string')
-      .isLength({ min: 5 })
-      .withMessage('La contraseña debe tener al menos 5 caracteres'),
-    check('email').custom(existsUserWithThisEmail),
-    validateFields
-  ],
-  login
-)*/
 
 router.post(
   '/register',
@@ -55,10 +35,6 @@ router.post(
     }
   }
 )
-
-const isRequired = prop => {
-  return `${prop} is required`
-}
 
 /* ======================
    Endpoint: /auth/login
