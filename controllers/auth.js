@@ -2,27 +2,15 @@ const { userRegister } = require('../services/auth')
 const service = require('../services/auth')
 
 async function userRegistro(firstName, password, email, lastName, image, req) {
-  let dto = {
-    message: 'Is ok',
-    status: 201,
-    data: [],
-    errors: []
-  }
-  try {
-    const responseService = await userRegister(
-      firstName,
-      password,
-      email,
-      lastName,
-      image,
-      req
-    )
-    dto.data = responseService
-    return dto
-  } catch (error) {
-    dto.errors = error
-    return dto
-  }
+  const dto = await userRegister(
+    firstName,
+    password,
+    email,
+    lastName,
+    image,
+    req
+  )
+  return dto
 }
 
 /* ======================
@@ -30,12 +18,8 @@ async function userRegistro(firstName, password, email, lastName, image, req) {
    ====================== */
 
 const login = async (email, password) => {
-  try {
-    const dto = await service.login(email, password)
-    return dto
-  } catch (error) {
-    return error
-  }
+  const dto = await service.login(email, password)
+  return dto
 }
 
 module.exports = { login, userRegistro }

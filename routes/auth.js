@@ -21,7 +21,7 @@ router.post(
   async (req, res, next) => {
     try {
       const { firstName, password, email, lastName, image } = req.body
-      const response = await controller.userRegistro(
+      const dto = await controller.userRegistro(
         firstName,
         password,
         email,
@@ -30,8 +30,9 @@ router.post(
         req
       )
 
-      res.status(201).send(response)
+      res.status(dto.status).json(dto)
     } catch (error) {
+      console.log(error)
       next(error)
     }
   }
@@ -55,10 +56,8 @@ router.post(
   async (req = request, res = response, next) => {
     try {
       const { email, password } = req.body
-      const response = await controller.login(email, password)
-      console.log(response)
-      if (response.status === 400) return res.status(400).json(response)
-      return res.status(200).json(response)
+      const dto = await controller.login(email, password)
+      res.status(dto.status).json(dto)
     } catch (error) {
       next(error)
     }
