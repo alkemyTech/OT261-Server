@@ -26,7 +26,7 @@ async function serviceGenerateJWT(userWithoutPassword) {
       expiresIn: jwtConfig.expiration_time
     })
 
-    return { user: userWithoutPassword, token }
+    return token
   } catch (error) {
     return error
   }

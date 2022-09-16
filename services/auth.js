@@ -27,8 +27,8 @@ async function userRegister(firstName, password, email, lastName, image, req) {
 
     await user.save()
     const { password: pass, ...userWithoutPassword } = user.toJSON()
-
-    dto.data = userWithoutPassword
+    const token = await serviceGenerateJWT(userWithoutPassword)
+    dto.data = { user: userWithoutPassword, token }
     return dto
   } catch (error) {
     delete dto.data
@@ -54,8 +54,8 @@ const login = async (email, password) => {
     }
 
     const { password: pass, ...userWithoutPassword } = user.toJSON()
-    const data = await serviceGenerateJWT(userWithoutPassword)
-    dto.data = data
+    const token = await serviceGenerateJWT(userWithoutPassword)
+    dto.data = { user: userWithoutPassword, token }
     return dto
   } catch (error) {
     delete dto.data
