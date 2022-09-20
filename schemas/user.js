@@ -20,11 +20,24 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       roleId: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
+      roleId: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1
+      },
+      deletedAt: DataTypes.DATE,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true
+      }
     },
     {
       sequelize,
       modelName: 'User',
-      timestamps: false,
+      timestamps: false
+    },
+    {
+      sequelize,
+      modelName: 'User'
     }
   )
   return User

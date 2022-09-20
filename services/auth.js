@@ -1,41 +1,69 @@
-const Sequelize = require("sequelize");
-const sequelize = require("../schemas").sequelize;
-const User = require("../schemas/user")(
-  sequelize,
-  Sequelize.DataTypes,
-  Sequelize.Model
-);
-var bcrypt = require("bcryptjs");
-const { validationResult } = require("express-validator");
+const db = require('../schemas')
+const { User } = db.sequelize.models
+const bcrypt = require('bcryptjs')
+const { serviceGenerateJWT } = require('./user')
 
-async function userRegister(firstName, password, email, lastName, image,req ) {
-  
-
-  image = image? image : "https://images.pexels.com/photos/1181325/pexels-photo-1181325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
-
-  const errors = validationResult(req);
-  
-  if (!errors.isEmpty()) return errors;
+async function userRegister(firstName, password, email, lastName, image, req) {
+  const dto = {
+    message: '',
+    status: 201,
+    data: [],
+    errors: []
+  }
+  image = image
+    ? image
+    : 'https://images.pexels.com/photos/1181325/pexels-photo-1181325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
 
   try {
-    const user = new User({ firstName, password, email, lastName, image });
-
-    const existsUser = await User.findOne({ where: { email: email } });
-
+    const existsUser = await User.findOne({ where: { email: email } })
     if (existsUser) {
-      return { msg: "This email is already associated with an account" };
+      throw new Error('This email is already associated with an account')
     }
 
-    const salt = bcrypt.genSaltSync();
-    user.password = bcrypt.hashSync(password, salt);
+    const user = new User({ firstName, password, email, lastName, image })
 
-    await user.save();
+    const salt = bcrypt.genSaltSync()
+    user.password = bcrypt.hashSync(password, salt)
 
-    return user;
+    await user.save()
+    const { password: pass, ...userWithoutPassword } = user.toJSON()
+    const token = await serviceGenerateJWT(userWithoutPassword)
+    dto.data = { user: userWithoutPassword, token }
+    return dto
   } catch (error) {
-    
-    return { msg: error };
+    delete dto.data
+    dto.message = error.message
+    dto.status = 400
+    dto.errors = [{ msg: error.message }]
+    return dto
   }
 }
 
-module.exports = { userRegister };
+const login = async (email, password) => {
+  const dto = {
+    message: '',
+    status: 200,
+    data: [],
+    errors: []
+  }
+  try {
+    const user = await User.findOne({ where: { email } })
+    const validPassword = bcrypt.compareSync(password, user.password)
+    if (!validPassword) {
+      throw new Error(`El correo o la contraseña no son válidos`)
+    }
+
+    const { password: pass, ...userWithoutPassword } = user.toJSON()
+    const token = await serviceGenerateJWT(userWithoutPassword)
+    dto.data = { user: userWithoutPassword, token }
+    return dto
+  } catch (error) {
+    delete dto.data
+    dto.message = error.message
+    dto.status = 400
+    dto.errors = [{ msg: dto.message }]
+    return dto
+  }
+}
+
+module.exports = { userRegister, login }
