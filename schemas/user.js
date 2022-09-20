@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       image: DataTypes.STRING,
       password: DataTypes.STRING,
+      roleId: DataTypes.INTEGER,
+      deletedAt: DataTypes.DATE,
       roleId: {
         type: DataTypes.INTEGER,
         defaultValue: 1
@@ -30,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'User'
+      modelName: 'User',
+      timestamps: false
     }
   )
   return User
